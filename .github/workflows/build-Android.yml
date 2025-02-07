@@ -1,0 +1,30 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Godot
+      uses: firebelley/godot-export@v1.1.0
+      with:
+        godot-version: '3.5'
+
+    - name: Build Android APK
+      run: |
+        mkdir -p build
+        godot --export "Android" build/PingPong.apk
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: PingPong-Android
+        path: build/PingPong.apk 
